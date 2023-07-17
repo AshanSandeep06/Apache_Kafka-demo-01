@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/Kafka_ZooKeeper/pom.xml" />
+        <option value="$PROJECT_DIR$/Module-01/pom.xml" />
       </list>
     </option>
   </component>
