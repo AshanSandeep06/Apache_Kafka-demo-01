@@ -14,6 +14,6 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic demoTopic() {
         //Give a name to the Topic
-        return TopicBuilder.name("topic-1").build();
+        return TopicBuilder.name("topic01").build();
     }
 }
