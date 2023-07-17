@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>lk.epic</groupId>
-    <artifactId>Kafka_ZooKeeper</artifactId>
+    <artifactId>Module-01</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
