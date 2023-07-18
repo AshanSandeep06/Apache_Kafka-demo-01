@@ -49,6 +49,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.jpos</groupId>
+            <artifactId>jpos</artifactId>
+            <version>2.1.7</version>
+        </dependency>
     </dependencies>
 
     <build>
