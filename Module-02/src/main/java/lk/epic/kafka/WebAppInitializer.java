@@ -1,5 +1,6 @@
 package lk.epic.kafka;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.jpos.iso.packager.ISO87APackager;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
