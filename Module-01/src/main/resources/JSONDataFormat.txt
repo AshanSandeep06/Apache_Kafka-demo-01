@@ -1,0 +1,5 @@
+Message as JSON Format, JSONSerializer will convert Customer Object,
+into JSON Object and write to Kafka Topic(Producer Duty)
+
+Then, Kafka Consumer will consume that JSON Object and convert it into
+Java Object

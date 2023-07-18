@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 // To send messages to the Topic we are going to
@@ -16,6 +17,7 @@ public class Kafka_Producer {
     //Let's inject the Kafka template in this Spring Bean
     private KafkaTemplate<String, String> kafkaTemplate;
 
+    @Autowired
     public Kafka_Producer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
@@ -28,6 +30,6 @@ public class Kafka_Producer {
 
     public void sendMessages(String message) {
         LOGGER.info(String.format("Message sent %s", message));
-        kafkaTemplate.send("topic01", message);
+        kafkaTemplate.send("myTopic", message);
     }
 }

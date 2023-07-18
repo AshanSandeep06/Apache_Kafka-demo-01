@@ -12,8 +12,9 @@ public class KafkaTopicConfig {
     // We are going to create a Spring Bean
     // To create a Kafka Topic
     @Bean
-    public NewTopic demoTopic() {
+    public NewTopic newTopic() {
         //Give a name to the Topic
-        return TopicBuilder.name("topic01").build();
+        System.out.println("HELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLo");
+        return TopicBuilder.name("myTopic").build();
     }
 }

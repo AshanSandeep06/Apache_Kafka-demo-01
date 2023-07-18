@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/kafka")
+@RequestMapping("/api/v1/messageController")
 @CrossOrigin
 public class MessageController {
     // We need to inject Kafka Producer
