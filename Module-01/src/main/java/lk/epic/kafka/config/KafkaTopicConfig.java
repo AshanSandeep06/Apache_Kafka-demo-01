@@ -1,4 +1,4 @@
-package lk.epic.kafka_zooKeeper.config;
+package lk.epic.kafka.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;

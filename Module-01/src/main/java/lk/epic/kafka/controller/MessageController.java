@@ -1,7 +1,6 @@
-package lk.epic.kafka_zooKeeper.controller;
+package lk.epic.kafka.controller;
 
-import lk.epic.kafka_zooKeeper.kafka.Kafka_Producer;
-import org.springframework.beans.factory.annotation.Autowired;
+import lk.epic.kafka.producer.String_Kafka_Producer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class MessageController {
     // We need to inject Kafka Producer
-    private Kafka_Producer kafkaProducer;
+    private String_Kafka_Producer kafkaProducer;
 
-    public MessageController(Kafka_Producer kafkaProducer) {
+    public MessageController(String_Kafka_Producer kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
     }
 

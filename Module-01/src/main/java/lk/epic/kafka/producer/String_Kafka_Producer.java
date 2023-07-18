@@ -1,10 +1,9 @@
-package lk.epic.kafka_zooKeeper.kafka;
+package lk.epic.kafka.producer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 // To send messages to the Topic we are going to
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Service;
 // We have created Kafka Producer which will use Kafka Template
 // to send messages to the topic
 @Service
-public class Kafka_Producer {
+public class String_Kafka_Producer {
     //Let's inject the Kafka template in this Spring Bean
     private KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
-    public Kafka_Producer(KafkaTemplate<String, String> kafkaTemplate) {
+    public String_Kafka_Producer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -26,7 +25,7 @@ public class Kafka_Producer {
     // Then can use, Spring-boot provided Default Logger
     // To log the message
     // Logger Instance to log this message
-    private static final Logger LOGGER = LoggerFactory.getLogger(Kafka_Producer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(String_Kafka_Producer.class);
 
     public void sendMessages(String message) {
         LOGGER.info(String.format("Message sent %s", message));

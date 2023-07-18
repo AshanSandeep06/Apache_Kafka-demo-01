@@ -1,4 +1,4 @@
-package lk.epic.kafka_zooKeeper;
+package lk.epic.kafka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
