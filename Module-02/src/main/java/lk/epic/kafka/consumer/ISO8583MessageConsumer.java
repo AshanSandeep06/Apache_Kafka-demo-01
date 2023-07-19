@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class ISO8583MessageConsumer {
     @Autowired
     private KafkaTemplate<String, byte[]> kafkaTemplate;
+
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
