@@ -27,24 +27,27 @@ public class ISO8583MessageConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ISO8583MessageConsumer.class);
 
     @KafkaListener(topics = "isoTopic", groupId = "myGroup")
-    public void consumeISO8583Messages(byte[] consumerMsg) {
+    @SendTo("isoTopic")
+    public byte[] consumeISO8583Messages(byte[] consumerMsg) {
         try {
             ISOMsg isoMessage = new ISOMsg();
             isoMessage.setPackager(packager);
             isoMessage.unpack(consumerMsg);
 
+            System.out.println();
             LOGGER.info(String.format("ISO8583 Message was Consumed by Consumer -> %s", ISOUtil.hexString(isoMessage.pack())));
 
-            sendResponse();
+            return sendResponse();
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public void sendResponse() {
+    public byte[] sendResponse() {
         try {
-            ISOMsg iso8583Response = ISO8583Message.getInstance().getIsoMessage();
+            ISOMsg iso8583Response = new ISOMsg();
             iso8583Response.setMTI("0110");
             iso8583Response.set("3", "000000");
             iso8583Response.set("4", "000000430000");
@@ -61,14 +64,16 @@ public class ISO8583MessageConsumer {
 
             iso8583Response.setPackager(packager);
             byte[] packedData = iso8583Response.pack();
+            return packedData;
 
-            Message<byte[]> response = MessageBuilder.withPayload(packedData)
-                    .setHeader(KafkaHeaders.TOPIC, "isoResponseTopic").build();
+            /*Message<byte[]> response = MessageBuilder.withPayload(packedData)
+                    .setHeader(KafkaHeaders.TOPIC, "isoTopic").build();
 
-            kafkaTemplate.send(response);
+            kafkaTemplate.send(response);*/
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

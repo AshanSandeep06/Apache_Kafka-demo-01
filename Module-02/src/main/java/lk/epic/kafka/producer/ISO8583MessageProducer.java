@@ -56,79 +56,22 @@ public class ISO8583MessageProducer {
             Message<byte[]> finalMessage = MessageBuilder.withPayload(packedData)
                     .setHeader(KafkaHeaders.TOPIC, "isoTopic").build();
 
-            LOGGER.info(String.format("Message Sent From Producer to Topic -> %s", finalMessage.toString()));
-
             kafkaTemplate.send(finalMessage);
-
-            // Send the message to Kafka and get the future result
-            /*ListenableFuture<SendResult<String, byte[]>> future = kafkaTemplate.send(finalMessage);
-            LOGGER.info("Received response from Kafka producer: ");
-            System.out.println("------------------------------------" + future.get().getProducerRecord());
-            System.out.println("------------------------------------" + future.completable().get().getProducerRecord().value());
-            System.out.println("------------------------------------" + future.completable().get().getRecordMetadata().toString().getBytes());
-            System.out.println("------------------------------------" + future.get().toString().getBytes().toString());*/
-
-            // Attach a callback to the future result
-            /*future.addCallback(new ListenableFutureCallback<SendResult<String, byte[]>>() {
-                @Override
-                public void onSuccess(SendResult<String, byte[]> result) {
-                    *//*ISOMsg iso8583Response = new ISOMsg();
-                    iso8583Response.setPackager(packager);
-                    try {
-                        iso8583Response.unpack(result.getProducerRecord().value());
-                        LOGGER.info(String.format("Message Sent From Producer to Topic -> %s", ISOUtil.hexString(iso8583Response.pack())));
-                    } catch (ISOException e) {
-                        e.printStackTrace();
-                    }*//*
-
-                    // -----------------------------------------
-
-                    // Handle successful message sending
-                    *//*RecordMetadata metadata = result.getRecordMetadata();
-                    System.out.println();
-                    LOGGER.info("Received response from Kafka producer: " + Arrays.toString(metadata.toString().getBytes()));*//*
-
-                    // Process the response received from the consumer
-                    ISOMsg iso8583Response = new ISOMsg();
-                    iso8583Response.setPackager(packager);
-                    try {
-
-                        System.out.println("On success : " + result.toString());
-                        System.out.println("On success : " + result.getProducerRecord());
-                        System.out.println("On success : " + result.getProducerRecord().value());
-                        System.out.println("On success : " + result.getProducerRecord().toString());
-                        System.out.println("On success : " + result.getRecordMetadata());
-                        System.out.println("On success : " + result.getRecordMetadata().toString());
-                        System.out.println("On success : " + result.getRecordMetadata().topic());
-
-                        iso8583Response.unpack(result.getProducerRecord().value());
-                        LOGGER.info("Received ISO8583 response from consumer: " + ISOUtil.hexString(iso8583Response.pack()));
-
-                        // Process the response as needed
-                    } catch (ISOException e) {
-                        LOGGER.error("Error unpacking the ISO8583 response: " + e.getMessage());
-                    }
-                }
-
-                @Override
-                public void onFailure(Throwable ex) {
-                    LOGGER.error("Failed to send response message: " + ex.getMessage());
-                }
-            });*/
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @KafkaListener(topics = "isoResponseTopic", groupId = "myGroup")
+    @KafkaListener(topics = "isoTopic", groupId = "myGroup")
     public void consumeISO8583Response(byte[] responseMessage) {
         try {
             ISOMsg iso8583Response = new ISOMsg();
             iso8583Response.setPackager(packager);
             iso8583Response.unpack(responseMessage);
 
-            LOGGER.info(String.format("Received ISO8583 response from consumer -> %s", ISOUtil.hexString(iso8583Response.pack())));
+            System.out.println();
+            LOGGER.info(String.format("Received ISO8583 response from consumer to Producer -> %s", ISOUtil.hexString(iso8583Response.pack())));
         } catch (Exception e) {
             e.printStackTrace();
         }
