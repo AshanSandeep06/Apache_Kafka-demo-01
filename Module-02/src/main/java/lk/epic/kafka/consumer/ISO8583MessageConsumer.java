@@ -28,7 +28,7 @@ public class ISO8583MessageConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ISO8583MessageConsumer.class);
 
     @KafkaListener(topics = "isoTopic", groupId = "myGroup")
-    @SendTo("isoTopic")
+    @SendTo("isoTopic") // How to avoid Listening same topic for consume message
     public byte[] consumeISO8583Messages(byte[] consumerMsg) {
         try {
             ISOMsg isoMessage = new ISOMsg();
