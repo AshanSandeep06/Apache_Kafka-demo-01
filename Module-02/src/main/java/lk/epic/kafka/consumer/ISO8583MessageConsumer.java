@@ -3,7 +3,11 @@ package lk.epic.kafka.consumer;
 import lk.epic.kafka.ISO8583Message.ISO8583Message;
 import lk.epic.kafka.producer.ISO8583MessageProducer;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.jpos.iso.ISOMsg;
 import org.jpos.iso.ISOUtil;
 import org.jpos.iso.packager.ISO87APackager;
@@ -12,11 +16,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 @Service
 public class ISO8583MessageConsumer {
@@ -27,17 +36,15 @@ public class ISO8583MessageConsumer {
     @Autowired
     ISO87APackager packager;
     private static final Logger LOGGER = LoggerFactory.getLogger(ISO8583MessageConsumer.class);
-    private ISO8583MessageProducer iso8583MessageProducer;
 
     @KafkaListener(topics = "isoTopic", groupId = "myGroup")
     public void consumeISO8583Messages(byte[] consumerMsg) {
         try {
-            ISOMsg isoMessage = ISO8583Message.getInstance().getIsoMessage();
+            ISOMsg isoMessage = new ISOMsg();
             isoMessage.setPackager(packager);
             isoMessage.unpack(consumerMsg);
 
             LOGGER.info(String.format("ISO8583 Message was Consumed by Consumer -> %s", ISOUtil.hexString(isoMessage.pack())));
-
 
             //-------------------------------------------------------
 
@@ -59,8 +66,25 @@ public class ISO8583MessageConsumer {
             iso8583Response.setPackager(packager);
             byte[] packedData = iso8583Response.pack();
 
-            ProducerRecord<String, byte[]> responseRecord = new ProducerRecord<>("isoTopic", packedData);
-//            iso8583MessageProducer.send(responseRecord);
+            Properties properties = new Properties();
+            properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+            properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+            properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
+
+            // Create a Kafka producer instance
+            Producer<String, byte[]> producer = new KafkaProducer<>(properties);
+
+            // Specify the partition and create a ProducerRecord
+            String topic = "isoTopic";
+            int partition = 1;  // Replace with the desired partition number
+            String key = "response";
+            ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, partition, key, packedData);
+
+            // Send the message
+            producer.send(record);
+
+            // Close the producer
+            producer.close();
 
             // ---------------------------------------------------------------------------------------
 

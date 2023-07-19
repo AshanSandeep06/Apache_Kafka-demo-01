@@ -10,6 +10,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic newTopic(){
         System.out.println("Topic is configured");
-        return TopicBuilder.name("isoTopic").build();
+        return TopicBuilder.name("isoTopic").partitions(2)
+                .build();
     }
 }
