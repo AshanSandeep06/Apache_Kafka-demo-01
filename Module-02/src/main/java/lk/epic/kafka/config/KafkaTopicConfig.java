@@ -8,9 +8,13 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicConfig {
     @Bean
-    public NewTopic newTopic(){
+    public NewTopic newTopic() {
         System.out.println("Topic is configured");
-        return TopicBuilder.name("isoTopic").partitions(2)
-                .build();
+        return TopicBuilder.name("isoTopic").build();
+    }
+
+    @Bean
+    public NewTopic newTopic2() {
+        return TopicBuilder.name("isoResponseTopic").build();
     }
 }
