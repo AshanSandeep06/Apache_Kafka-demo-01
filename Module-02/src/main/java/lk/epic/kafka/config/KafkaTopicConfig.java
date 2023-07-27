@@ -13,8 +13,8 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("isoTopic").build();
     }
 
-/*    @Bean
+    @Bean
     public NewTopic newTopic2() {
         return TopicBuilder.name("isoResponseTopic").build();
-    }*/
+    }
 }

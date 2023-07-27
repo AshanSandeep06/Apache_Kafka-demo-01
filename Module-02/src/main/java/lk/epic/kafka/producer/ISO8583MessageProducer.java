@@ -35,7 +35,7 @@ public class ISO8583MessageProducer {
 
     public void sendISO8583Message(ISO8583FieldsDTO allFields) {
         try {
-            ISOMsg message = ISO8583Message.getInstance().getIsoMessage();
+            ISOMsg message = new ISOMsg();
             message.setMTI(allFields.getF0());
             message.set("3", allFields.getF3());
             message.set("4", allFields.getF4());
@@ -63,7 +63,7 @@ public class ISO8583MessageProducer {
         }
     }
 
-    @KafkaListener(topics = "isoTopic", groupId = "myGroup")
+    @KafkaListener(topics = "isoResponseTopic", groupId = "myGroup")
     public void consumeISO8583Response(byte[] responseMessage) {
         try {
             ISOMsg iso8583Response = new ISOMsg();
